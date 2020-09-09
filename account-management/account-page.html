@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
+    <script src="../effects/global-routing-handler.js"></script>
+    <script src="https://kit.fontawesome.com/ffda2c1e75.js" crossorigin="anonymous"></script>
+    <title>Auto Hound</title>
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+    <link rel="icon" href="../assets/favicon.svg" sizes="100x100">
+    <link rel="stylesheet" href="../css/loader.css">
+    <link rel="stylesheet" href="../css/account-page.css">
+    <!-- <link rel="stylesheet" href="../css/login-page.css"> -->
+</head>
+
+<body onload="getAccountDetails()">
+    <ul class="header">
+        <li id="logo">
+            <a href="../index.html"><img src="../assets/logo.svg"></a>
+        </li>
+        <li class="active-menu">
+            <a class="live-listing-tab" href="../index.html?livelisting">LIVE LISTINGS<img  class="live-listing-active" src="../assets/active.svg"></a>
+            <a class="filter-tab" href="../index.html?filter">FILTERS<img class="filter-active" src="../assets/active.svg"></a>
+        </li>
+        <li class="user-account-menu" onclick="displayNav('responsive-sidebar')" id="responsive-dropdown">
+            <!-- <i id="res-drp-bars" class="fas fa-bars"></i> -->
+            <svg id="res-drp-bars" width="30" height="10" viewBox="0 0 30 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="-1.04907e-07" y1="9" x2="30" y2="9" stroke="#2C2C2C" stroke-width="2"/>
+                        <line y1="1" x2="30" y2="1" stroke="#2C2C2C" stroke-width="2"/>
+                        </svg>
+            <svg id="res-drp-close" style="display: none;" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="1.13664" y1="14.1562" x2="13.8646" y2="1.42825" stroke="#2C2C2C" stroke-width="2"/>
+                            <line x1="1.13679" y1="1.42766" x2="13.8647" y2="14.1556" stroke="#2C2C2C" stroke-width="2"/>
+                            </svg>
+
+            <!-- <i id="res-drp-close" style="display: none;" class="fas fa-times"></i> -->
+            <div class="user-account-menu-content" id="responsive-sidebar" onclick="displayNav('responsive-sidebar')">
+                <a href="../index.html?livelisting" class="live-listing-tab">LIVE LISTING<img class="live-listing-active" src="../assets/active.svg"></a>
+                <a href="../index.html?filter" class="filter-tab">FILTERS<img class="filter-active" src="../assets/active.svg"></a>
+                <a href="./account-page.html" style="color: #0266ff; display: inline-flex; flex-direction: column;">Account<img style="display: inline;" src="../assets/active.svg"></a>
+                <a href="../logindir/newpass.html">Password</a>
+                <a onclick="logoutSession()" style="color: red;">Logout<img class="logout" src="../assets/logout.svg"></a>
+            </div>
+        </li>
+        <li class="user-account-menu" id="normal-dropdown">
+            <a href="#" onclick="">
+                <span style="margin-right: 3px;">My Account</span><svg width="11" height="7" viewBox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1L5.23529 6L10 1" stroke="#262626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg></a>
+            <div class="user-account-menu-content" id="normal-sidebar">
+                <a href="./account-page.html">Account</a>
+                <a href="../logindir/newpass.html">Password</a>
+                <a onclick="logoutSession()" class="logouthover" style="color: red;">Logout<img  class="logout logout-red" src="../assets/logout.svg"><img class="logout logout-white"  src="../assets/logout-white.svg"></a>
+            </div>
+        </li>
+    </ul>
+
+    <div id="wrap-bdy" class="body-wrapper" onclick="closeMenu(),closeToolTip()">
+        <!-- <div class="loader" id="spin-loader">
+            <div class="lds-roller">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div> -->
+        <div id="blurdiv" onclick="displayNav('responsive-sidebar')"></div>
+        <div class="page-container">
+            <div class="left-div">
+                <div class="form-container">
+                    <h1>Account</h1>
+                    <form id="account-form" class="form">
+                        <div class="form-ele">
+                            <input type="text" id="name" placeholder="Name" autocomplete="off" disabled required style="background-color: rgba(0, 0, 0, 0.2);">
+                        </div>
+                        <div class="form-ele">
+                            <input type="text" id="dealership" placeholder="Dealership" autocomplete="off" required>
+                        </div>
+                        <div class="form-ele">
+                            <input type="text" id="address" placeholder="Address" autocomplete="off" required>
+                        </div>
+                        <div class="form-ele">
+                            <input type="text" id="zipcode" placeholder="Zip Code" autocomplete="off" required>
+                        </div>
+                        <div class="form-ele">
+                            <input type="text" id="phone" placeholder="Phone Number" autocomplete="off" required>
+                        </div>
+                    </form>
+                    <div class="listing-notification">
+                        <div class="headerandbutton-container-header">
+                            <div style="margin-right: 6px; font-size: 16px;">LISTING NOTIFICATIONS</div><img class="tooltipimg" src="../assets/knowmore.svg">
+                            <span class="tooltiptext" data-clicked="no">If you don’t like receiving texts/SMS messages at all hours of the day, you can set certain hours
+                                where you want to be notified of auction listing matches.</span>
+                        </div>
+                        <div class="time-selector-div">
+                            <h6>Monday - Friday</h6>
+                            <div class="time-selector">
+                                <select class="minimal" id="weekDayMinTime">
+                                    <option value="" disabled selected>Time</option>
+                                    <option value="1">01:00 </option>
+                                    <option value="2">02:00 </option>
+                                    <option value="3">03:00 </option>
+                                    <option value="4">04:00 </option>
+                                    <option value="5">05:00 </option>
+                                    <option value="6">06:00 </option>
+                                    <option value="7">07:00 </option>
+                                    <option value="8">08:00 </option>
+                                    <option value="9">09:00 </option>
+                                    <option value="10">10:00 </option>
+                                    <option value="11">11:00 </option>
+                                    <option value="12">12:00</option>
+
+                                </select>
+                                <select class="minimal" id="weekDayMinTimeAMPM">
+                                    <option value="AM" selected>AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                                <span style="color: #0f6eff; position: relative; top: 12px;">-</span>
+                                <select class="minimal" id="weekDayMaxTime">
+                                    <option value="" disabled selected>Time</option>
+                                    <option value="1">01:00 </option>
+                                    <option value="2">02:00 </option>
+                                    <option value="3">03:00 </option>
+                                    <option value="4">04:00 </option>
+                                    <option value="5">05:00 </option>
+                                    <option value="6">06:00 </option>
+                                    <option value="7">07:00 </option>
+                                    <option value="8">08:00 </option>
+                                    <option value="9">09:00 </option>
+                                    <option value="10">10:00 </option>
+                                    <option value="11">11:00 </option>
+                                    <option value="12">12:00</option>
+                                </select>
+                                <select class="minimal" id="weekDayMaxTimeAMPM">
+                                    <option value="AM">AM</option>
+                                    <option value="PM" selected>PM</option>
+                                </select>
+                                <select style="display: none;" class="minimal" id="time-zone">
+                                    <option value="EST">EST</option>
+                                    <option value="GST">GST</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="time-selector-div">
+                            <h6>Weekends</h6>
+                            <div class="time-selector">
+                                <select class="minimal" id="weekendDayMinTime">
+                                    <option value="" disabled selected>Time</option>
+                                    <option value="1">01:00 </option>
+                                    <option value="2">02:00 </option>
+                                    <option value="3">03:00 </option>
+                                    <option value="4">04:00 </option>
+                                    <option value="5">05:00 </option>
+                                    <option value="6">06:00 </option>
+                                    <option value="7">07:00 </option>
+                                    <option value="8">08:00 </option>
+                                    <option value="9">09:00 </option>
+                                    <option value="10">10:00 </option>
+                                    <option value="11">11:00 </option>
+                                    <option value="12">12:00</option>
+                                </select>
+                                <select class="minimal" id="weekendDayMinTimeAMPM">
+                                    <option value="AM" selected>AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                                <span style="color: #0f6eff; position: relative; top: 12px;">-</span>
+
+                                <select class="minimal" id="weekendDayMaxTime">
+                                    <option value="" disabled selected>Time</option>
+                                    <option value="1">01:00 </option>
+                                    <option value="2">02:00 </option>
+                                    <option value="3">03:00 </option>
+                                    <option value="4">04:00 </option>
+                                    <option value="5">05:00 </option>
+                                    <option value="6">06:00 </option>
+                                    <option value="7">07:00 </option>
+                                    <option value="8">08:00 </option>
+                                    <option value="9">09:00 </option>
+                                    <option value="10">10:00 </option>
+                                    <option value="11">11:00 </option>
+                                    <option value="12">12:00</option>
+                                </select>
+
+                                <select class="minimal" id="weekendDayMaxTimeAMPM">
+                                    <option value="AM">AM</option>
+                                    <option value="PM" selected>PM</option>
+                                </select>
+                                <select style="display: none;" class="minimal" id="time-zone">
+                                    <option value="EST">EST</option>
+                                    <option value="GST">GST</option>
+                                </select>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div style="padding:20px;" class="btn-div">
+                        <button onclick="editAccountDetails()" style="width: 90%!important;">UPDATE</button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="line"></div>
+            <div class="right-div">
+                <section class="heading">
+                    <h1>Billing</h1>
+                    <h5>Bill Monthly $12/mo</h5>
+                </section>
+                <section class="paypal-container">
+                    <div class="logo-container">
+                        <span>MY PAYPAL</span><img src="../assets/paypal.svg">
+                    </div>
+                    <div id="connection-status">
+                        PAYPAL NOT CONNECTED
+                    </div>
+                    <div class="btn-div">
+                        <button>CONNECT  +</button>
+                    </div>
+                </section>
+                <section class="footer-btn-section btn-div">
+                    <button class="delete-btn" onclick="deleteAccount()">DELETE ACCOUNT<img style="margin-left: 6px;" src="../assets/cross.svg"></button>
+                </section>
+            </div>
+        </div>
+
+        <div class="page-footer">
+            <div class="left-footer"><a>© 2020 RVAOnlineVentures</a></div>
+            <div class="right-footer">
+                <a href="./privacy.html">Privacy</a>
+                <a href="./terms.html">Terms</a>
+            </div>
+        </div>
+    </div>
+    <!-- ----------------body-wrapper ends---------- -->
+    <!-- modal starts---------- -->
+    <div id="modal-container">
+        <div id="modal-popup" class="modal">
+            <div class="modal-content">
+                <div id="modal-data">
+                    <p id="head-modal-data"></p>
+                    <p id="foot-modal-data"></p>
+                </div>
+                <div class="modal-footer-btn">
+                    <button id="modal-btn-left"></button>
+                    <button id="modal-btn-right"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal ends........................... -->
+
+
+
+    <!-- ----------------templating divs begin (for dynamic rendering from server)---------- -->
+    <script id="modal-template" type="text/html">
+        <div id="modal-popup" class="modal">
+            <div class="modal-content">
+                <div id="modal-data">
+                    <p id="head-modal-data">{{{headdata}}}</p>
+                    <p id="foot-modal-data">{{{footdata}}}</p>
+                </div>
+                <div class="modal-footer-btn">
+                    <button class='{{classleftbtn}}' id="modal-btn-left" onclick='{{leftbtn}}'>{{{btnleftdata}}}</button>
+                    <button class='{{classrightbtn}}' id="modal-btn-right" onclick='{{rightbtn}}'>{{{btnrightdata}}}</button>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <!-- -----------scripts for cdn------- -->
+    <script src="../cdnjs/mustache.min.js"></script>
+    <script src="../effects/account-page.js"></script>
+    <script src="../auth-handler/account-handler.js"></script>
+    <script src="../auth-handler/update-account-handler.js"></script>
+    <script src="../auth-handler/logout-handler.js"></script>
+</body>
+
+</html>

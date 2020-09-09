@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
+    <script src="https://kit.fontawesome.com/ffda2c1e75.js" crossorigin="anonymous"></script>
+    <title>Auto Hound</title>
+    <script src="../effects/global-routing-handler-login.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+    <link rel="icon" href="../assets/favicon.svg" sizes="100x100">
+    <link rel="stylesheet" href="../css/loader.css">
+    <link rel="stylesheet" href="../css/login-page.css">
+</head>
+
+<body>
+    <ul class="header">
+        <li id="logo">
+            <a href="../index.html"><img src="../assets/logo.svg"></a>
+        </li>
+    </ul>
+    <div class="sidebar-image-div" id="side-div">
+        <img src="../assets/login-side.svg">
+    </div>
+    <div class="body-wrapper">
+        <!-- <div class="loader" id="spin-loader">
+            <div class="lds-roller">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div> -->
+        <div class="login-form-div">
+            <!-- header ends---------- -->
+            <div class="form-container">
+                <h1>Register</h1>
+                <h3 id="error-heading" class="errors">ERROR</h3>
+                <form id="registration-form" class="form">
+                    <div class="form-ele">
+                        <input type="email" id="email" placeholder="Email" required autocomplete="off">
+                    </div>
+                    <div class="form-ele">
+                        <input type="password" id="password" placeholder="Password" autocomplete="off" required>
+                    </div>
+                    <div class="form-ele">
+                        <input type="password" id="confirmPassword" placeholder="Confirm Password" autocomplete="off" required>
+                    </div>
+                    <div class="form-ele">
+                        <input type="text" id="dealership" placeholder="Dealership" autocomplete="off" required>
+                    </div>
+                    <div class="form-ele">
+                        <input type="tel" id="phoneNum" placeholder="Phone Number" required autocomplete="off">
+                    </div>
+
+                    <div class="form-ele">
+                        <button><i id="l-loader"  style="position: relative;left: -12px;animation: spinloader 2s linear infinite;" class="fas fa-spinner"></i>SEND</button>
+                    </div>
+                </form>
+
+            </div>
+            <section id="reg-footer" class="footer">
+                Already have an account? <span style="color: #0F6EFF;"><a href="./login.html"><u>Login Now</u></a></span>
+            </section>
+        </div>
+
+    </div>
+
+
+    <script src="../auth-handler/registration-handler.js"></script>
+    <div style="visibility: hidden;">
+        <i class="fas fa-spinner"></i>
+    </div>
+
+</body>
+
+</html>

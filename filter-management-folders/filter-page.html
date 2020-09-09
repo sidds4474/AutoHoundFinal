@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
+    <!-- <script src="https://kit.fontawesome.com/ffda2c1e75.js" crossorigin="anonymous"></script> -->
+    <title>Auto Hound</title>
+    <script src="../effects/global-routing-handler.js"></script>
+    <link rel="stylesheet" href="../css/loader.css">
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+    <link rel="icon" href="../assets/favicon.svg" sizes="100x100">
+    <link rel="stylesheet" href="../css/filter-manager.css">
+
+</head>
+
+<body onload="fetchFilterDataById()">
+    <ul class="header">
+        <li id="logo">
+            <a href="../index.html"><img src="../assets/logo.svg"></a>
+        </li>
+        <li class="active-menu">
+            <a class="live-listing-tab" onclick="cancelFilter('../index.html?livelisting')">LIVE LISTINGS<img  class="live-listing-active" src="../assets/active.svg"></a>
+            <a class="filter-tab" onclick="cancelFilter('../index.html?filter')">FILTERS<img class="filter-active" src="../assets/active.svg"></a>
+        </li>
+        <li class="user-account-menu" onclick="displayNav('responsive-sidebar')" id="responsive-dropdown">
+            <!-- <i id="res-drp-bars" class="fas fa-bars"></i> -->
+            <svg id="res-drp-bars" width="30" height="10" viewBox="0 0 30 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="-1.04907e-07" y1="9" x2="30" y2="9" stroke="#2C2C2C" stroke-width="2"/>
+                        <line y1="1" x2="30" y2="1" stroke="#2C2C2C" stroke-width="2"/>
+                        </svg>
+            <svg id="res-drp-close" style="display: none;" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="1.13664" y1="14.1562" x2="13.8646" y2="1.42825" stroke="#2C2C2C" stroke-width="2"/>
+                            <line x1="1.13679" y1="1.42766" x2="13.8647" y2="14.1556" stroke="#2C2C2C" stroke-width="2"/>
+                            </svg>
+
+            <!-- <i id="res-drp-close" style="display: none;" class="fas fa-times"></i> -->
+            <div class="user-account-menu-content" id="responsive-sidebar" onclick="displayNav('responsive-sidebar')">
+                <a onclick="cancelFilter('../index.html?livelisting')" class="live-listing-tab">LIVE LISTING<img class="live-listing-active" src="../assets/active.svg"></a>
+                <a onclick="cancelFilter('../index.html?filter')" class="filter-tab">FILTERS<img class="filter-active" src="../assets/active.svg"></a>
+                <a onclick="cancelFilter('../account-management/account-page.html')">Account</a>
+                <a onclick="cancelFilter('../logindir/newpass.html')">Password</a>
+                <a onclick="logoutSession()" style="color: red;">Logout<img class="logout" src="../assets/logout.svg"></a>
+            </div>
+        </li>
+        <li class="user-account-menu" id="normal-dropdown">
+            <a href="#" onclick="">
+                <span style="margin-right: 3px;">My Account</span><svg width="11" height="7" viewBox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1L5.23529 6L10 1" stroke="#262626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg></a>
+            <div class="user-account-menu-content" id="normal-sidebar">
+                <a onclick="cancelFilter('../account-management/account-page.html')">Account</a>
+                <a onclick="cancelFilter('../logindir/newpass.html')">Password</a>
+                <a onclick="logoutSession()" class="logouthover" style="color: red;">Logout<img  class="logout logout-red" src="../assets/logout.svg"><img class="logout logout-white"  src="../assets/logout-white.svg"></a>
+            </div>
+        </li>
+    </ul>
+
+    <div id="wrap-bdy" class="body-wrapper" onclick="closeMenu(),closeToolTip()">
+        <div id="blurdiv" onclick="displayNav('responsive-sidebar')"></div>
+        <div id="page1" class="section-wrapper">
+            <!-- -------------heading-section starts---------- -->
+
+            <section id="heading-section">
+                <h1>New Filter</h1>
+                <h5>Page 1/3</h5>
+            </section>
+            <!-- -------------heading-section starts---------- -->
+
+
+            <!-- -------------filter-name-section starts---------- -->
+
+            <section id="filter-name-section">
+                <h2>Filter #1</h2>
+                <div class="section-ele">
+                    <input id="filter-name" type="text" maxlength="15" placeholder="Name" required autocomplete="off">
+                    <h2 style="font-size:11px; color: #515050;"><span style="color: #E73E3E;">*</span>15 Character Limit</h2>
+                </div>
+            </section>
+            <!-- -------------filter-name-section starts---------- -->
+
+
+            <!-- -------------filter-management-section starts---------- -->
+
+            <section id="filter-manager-section">
+                <h2>AUCTION <span style="font-size: 11px; color: #515050;">  (if N/A, leave blank)</span></h2>
+                <div id="filter-manager-div">
+                    <div id="left-div">
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Auction / Inspection Type </div><img class="tooltipimg" src="../assets/knowmore.svg"><span class="tooltiptext" data-clicked="no">Select the auction type(s) you are looking for.
+                                    NOTE: If you select an auction type, but DO NOT select Live Appraisal, we will not show you Live
+                                    Appraisal auctions.
+                                    Again, if you select any options and not Live Appraisal, Live Appraisal Auctions will be filtered
+                                    out.</span>
+                            </div>
+                            <div class="headerandbutton-container-button-div" id="auctionInspectionType">
+                                <div data-isclicked="no" class="btn-div auc-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+
+                                    <div>ACV Inspected</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div auc-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>ACV Certified Inspected</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div auc-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Live Appraisal</div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Auction Color</div><img class="tooltipimg" src="../assets/knowmore.svg"><span class="tooltiptext" data-clicked="no">Select the auction light you are looking for or don’t select any to show all.</span>
+                            </div>
+                            <div class="headerandbutton-container-button-div" id="auctionColor">
+                                <div data-isclicked="no" class="btn-div color-type-btn">
+                                    <img style="padding-right:4px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+
+                                    <div>Black</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div color-type-btn">
+                                    <img style="padding-right:4px" src="../assets/plus.svg"><img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+
+                                    <div>Red</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div color-type-btn">
+                                    <img style="padding-right:4px" src="../assets/plus.svg"><img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+
+                                    <div>Blue</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div color-type-btn">
+                                    <img style="padding-right:4px" src="../assets/plus.svg"><img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+
+                                    <div>Yellow</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div color-type-btn">
+                                    <img style="padding-right:4px" src="../assets/plus.svg"><img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+
+                                    <div>Pink</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div color-type-btn">
+                                    <img style="padding-right:4px" src="../assets/plus.svg"><img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+
+                                    <div>Green</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div color-type-btn">
+                                    <img style="padding-right:4px" src="../assets/plus.svg"><img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+
+                                    <div>Grey</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div color-type-btn">
+                                    <img style="padding-right:4px" src="../assets/plus.svg"><img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+
+                                    <div>Brown</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div color-type-btn">
+                                    <img style="padding-right:4px" src="../assets/plus.svg"><img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+
+                                    <div>Orange</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div color-type-btn">
+                                    <img style="padding-right:4px" src="../assets/plus.svg"><img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+
+                                    <div>Voilet</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="range-div headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Time Remaining </div><img class="tooltipimg" src="../assets/knowmore.svg"><span class="tooltiptext" data-clicked="no">We set a minimum of 5 minutes and recommend 8 minutes. Any more than 8 minutes and you
+                                    will start seeing auctions before the bidding really starts. Therefore, wasting your time reviewing
+                                    auctions outside your budget, profitability margins.
+                                    8 minutes is the sweet spot!</span>
+                                <p style="margin-left: auto;"><span class="slider-data" id="time-data"></span><span style="color: #9D9D9D;">Minutes</span></p>
+                            </div>
+                            <div class="single-range-slider-div">
+                                <input style="margin-top:10px; padding:0" type="range" step="1" min="5" max="20" value="5" class="mul-range" id="time-slider">
+                                <div class="single-range-slider">
+                                    <div class="s-track"></div>
+                                    <div id="time-slider-range" class="s-range"></div>
+                                    <div id="time-slider-thumb" class="s-thumb"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="page1-line" class="line"></div>
+                    <div id="right-div">
+                        <div class="range-div headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Distance</div><img class="tooltipimg" src="../assets/knowmore.svg"><span class="tooltiptext" data-clicked="no">Using your dealership’s zip code on your Account page, this is a general distance between the
+                                    auction and your dealership...+/- 25 miles.</span>
+                                <p style="margin-left: auto;"><span class="slider-data" id="distance-data"></span><span style="color: #9D9D9D;">Miles</span></p>
+                            </div>
+                            <div class="single-range-slider-div">
+                                <input style="margin-top:10px; padding:0" type="range" min="1" max="10" value="1" step="1" class="mul-range" id="distance-slider">
+                                <div class="single-range-slider">
+                                    <div class="underlay">
+                                        <div class="breakpoint"></div>
+                                        <div class="breakpoint"></div>
+                                        <div class="breakpoint"></div>
+                                        <div class="breakpoint"></div>
+                                        <div class="breakpoint"></div>
+                                        <div class="breakpoint"></div>
+                                        <div class="breakpoint"></div>
+                                        <div class="breakpoint"></div>
+                                        <div class="breakpoint"></div>
+                                    </div>
+                                    <div class="s-track"></div>
+                                    <div id="distance-slider-range" class="s-range"></div>
+                                    <div id="distance-slider-thumb" class="s-thumb"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">States (EXCLUDE)</div><img class="tooltipimg" src="../assets/knowmore.svg"><span class="tooltiptext" data-clicked="no">If you try to stay way from specific states, you can exclude them here.</span>
+                            </div>
+                            <div id="states" class="small-btn-div headerandbutton-container-button-div">
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>AL</div>
+                                </div>
+                                <div style="display: none;" data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>AL</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>AK</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>AZ</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>AR</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>CA</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>CO</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>CT</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>DE</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>FL</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>GA</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>HI</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>ID</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>IL</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>IN</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>IA</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>KS</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>KY</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>LA</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>ME</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>MD</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>MA</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>MI</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>MN</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>MS</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>DC</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>ND</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>OH</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>OK</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>OR</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>PA</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>RI</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>SD</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>SC</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>TN</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>TX</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>UT</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>VT</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>VA</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>WA</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>WV</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>WI</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>WY</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div states-exclude-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>WC</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- -------------filter-management-section ends---------- -->
+
+
+            <!-- -------------footer-section starts---------- -->
+
+            <section id="footer-section">
+                <button class="cancel-btn" onclick="cancelFilter('../index.html?livelisting')"><span>CANCEL</span></button>
+                <button style="display: none; " class="next-page-btn backtoreview" onclick="reviewData(),changePage('#review-page')"><span>REVIEW</span></button>
+                <button class="next-page-btn next-btn" onclick="changePage('#page2'),checkFilterName()"><span>NEXT (2/3)</span><img style="margin-left:7px ; position: relative; top: 1px;" src="../assets/front-arrow.svg"></button>
+            </section>
+            <!-- -------------footer-section starts---------- -->
+        </div>
+        <div id="page2" style="display: none;" class="section-wrapper">
+            <!-- -------------heading-section starts---------- -->
+
+            <section id="heading-section">
+                <h1>New Filter</h1>
+                <h5>Page 2/3</h5>
+            </section>
+            <!-- -------------heading-section starts---------- -->
+
+
+
+
+
+            <!-- -------------filter-management-section starts---------- -->
+
+            <section id="filter-manager-section">
+                <h2>VEHICLE <span style="font-size: 11px; color: #515050;">  (if N/A, leave blank)</span></h2>
+                <div id="filter-manager-div">
+                    <div id="left-div">
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Body Type </div>
+                                <!--<img class="tooltipimg" src="../assets/knowmore.svg"><span class="tooltiptext" data-clicked="no" >Tooltip text</span> -->
+                            </div>
+                            <div id="bodyTypes" class="headerandbutton-container-button-div">
+                                <div data-isclicked="no" class="btn-div body-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+
+                                    <div>Sedan</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div body-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Hatchback</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div body-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>MUV/SUV</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div body-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Convertible</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div body-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Jeep</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div body-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Coupe</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div body-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Wagon</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div body-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Van</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Drivetrain</div>
+                                <!-- <img class="tooltipimg" src="../assets/knowmore.svg"><span class="tooltiptext" data-clicked="no" >Tooltip text</span> -->
+                            </div>
+                            <div id="drivetrain" class="headerandbutton-container-button-div">
+                                <div data-isclicked="no" class="btn-div drivertrain-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Sedan</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div drivertrain-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Hatchback</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div drivertrain-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>MUV/SUV</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div drivertrain-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Convertible</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div drivertrain-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Jeep</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div drivertrain-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Coupe</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div drivertrain-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Wagon</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div drivertrain-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Van</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Transmission</div>
+                                <!-- <img class="tooltipimg" src="../assets/knowmore.svg"><span class="tooltiptext" data-clicked="no" >Tooltip text</span> -->
+                            </div>
+                            <div id="transmission" class="headerandbutton-container-button-div">
+                                <div data-isclicked="no" class="btn-div transmission-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Automatic</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div transmission-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Mechanic</div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Fuel Type </div>
+                                <!-- <img class="tooltipimg" src="../assets/knowmore.svg"><span class="tooltiptext" data-clicked="no" >Tooltip text</span> -->
+                            </div>
+                            <div id="fuelType" class="headerandbutton-container-button-div">
+                                <div data-isclicked="no" class="btn-div fuel-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Gasoline</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div fuel-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Deisel</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div fuel-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Liquified Petroleum</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div fuel-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Bio-Diesel</div>
+
+                                </div>
+                                <div data-isclicked="no" class="btn-div fuel-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Ethanol</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div fuel-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Compressed Natural Gas</div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Reserve Met</div>
+                                <!-- <img class="tooltipimg" src="../assets/knowmore.svg"><span class="tooltiptext" data-clicked="no" >Tooltip text</span> -->
+                            </div>
+                            <div class="headerandbutton-container-button-div">
+                                <div data-isclicked="no" disabled="false" data-other="1" class="btn-div reserve-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Yes</div>
+                                </div>
+                                <div data-isclicked="no" disabled="false" data-other="0" class="btn-div reserve-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>No</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="page2-line" class="line"></div>
+                    <div id="right-div">
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Make</div>
+                                <!-- <img class="tooltipimg" src="../assets/knowmore.svg"><span class="tooltiptext" data-clicked="no" >Tooltip text</span> -->
+                            </div>
+                            <div class="headerandbutton-container-searchbar">
+                                <input style="background-color:#f2f2f2;" type="text" placeholder="Search" required autocomplete="off">
+                            </div>
+                            <div class="headerandbutton-container-button-div">
+                                <div data-isclicked="no" class="btn-div make-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Sedan</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div make-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Hatchback</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div make-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>MUV/SUV</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div make-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Convertible</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div make-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Jeep</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div make-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Coupe</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div make-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Wagon</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div make-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Van</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Model</div>
+                                <!-- <img class="tooltipimg" src="../assets/knowmore.svg"><span class="tooltiptext" data-clicked="no" >Tooltip text</span> -->
+                            </div>
+                            <div class="headerandbutton-container-searchbar">
+                                <input style="background-color:#f2f2f2;" type="text" placeholder="Search" required autocomplete="off">
+
+                            </div>
+                            <div class="headerandbutton-container-button-div">
+                                <div data-isclicked="no" class="btn-div model-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Audi</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div model-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div style=" padding-right: 0!important;">Alfa</div>
+                                    <div style="margin-left: 3px;">Romeo</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div model-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>BMW</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div model-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Cadillac</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div model-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Chevrolet</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div model-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Fiat</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div model-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Honda</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div model-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                    <div>Infiniti</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="range-div headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Years</div>
+                                <!-- <img class="tooltipimg" src="../assets/knowmore.svg"><span class="tooltiptext" data-clicked="no" >Tooltip text</span> -->
+                                <p style="margin-left: auto;"><span class="slider-data" id="year-data-min">2005</span>- <span class="slider-data" id="year-data-max">2019</span></p>
+                            </div>
+                            <div class="multirange-slider-div">
+                                <input class="mul-range" type="range" id="input-left-year" min="1970" max="2020" value="1970">
+                                <input class="mul-range" type="range" id="input-right-year" min="1970" max="2020" value="1973">
+                                <div class="mulrange-slider">
+                                    <!-- //slider -->
+                                    <div class="track"></div>
+                                    <div id="range-year" class="range"></div>
+                                    <div id="thumb-left-year" class="thumb left"></div>
+                                    <div id="thumb-right-year" class="thumb right"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="range-div headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Miles / Odometer</div>
+                                <!-- <img class="tooltipimg" src="../assets/knowmore.svg"><span class="tooltiptext" data-clicked="no" >Tooltip text</span> -->
+                                <p style="margin-left: auto;"><span class="slider-data" id="miles-data-min"></span>- <span class="slider-data" id="miles-data-max"></span></p>
+                            </div>
+                            <div class="multirange-slider-div">
+                                <input class="mul-range" type="range" id="input-left-dis" min="0" max="201000" value="0" step="1000">
+                                <input class="mul-range" type="range" id="input-right-dis" min="0" max="201000" value="1000" step="1000">
+                                <div class="mulrange-slider">
+                                    <!-- //slider -->
+                                    <div class="track"></div>
+                                    <div id="range-dis" class="range"></div>
+                                    <div id="thumb-left-dis" class="thumb left"></div>
+                                    <div id="thumb-right-dis" class="thumb right"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="range-div headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Max Bid </div>
+                                <!-- <img class="tooltipimg" src="../assets/knowmore.svg"><span class="tooltiptext" data-clicked="no" >Tooltip text</span> -->
+                                <p style="margin-left: auto;">$ <span class="slider-data" id="max-bid-data">3000</span></p>
+                            </div>
+                            <div class="single-range-slider-div">
+                                <input style="margin-top:10px; padding:0" type="range" min="0" max="30500" value="0" step="500" class="mul-range" id="max-bid-slider">
+                                <div class="single-range-slider">
+                                    <div class="s-track"></div>
+                                    <div id="max-bid-slider-range" class="s-range"></div>
+                                    <div id="max-bid-slider-thumb" class="s-thumb"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="range-div headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Profit (Minimum) </div><img class="tooltipimg" src="../assets/knowmore.svg"><span class="tooltiptext" data-clicked="no">We consider Profit as the auction high bid minus low online retail value. This does not consider
+                                        buying fees, transportation or reconditioning costs. This is just a general profit guide to ensure
+                                        you are not looking at auctions that are being run up.</span>
+                                <p style="margin-left: auto;">$ <span class="slider-data" id="profit-data"></span></p>
+                            </div>
+                            <div class="single-range-slider-div">
+                                <input style="margin-top:10px; padding:0" type="range" min="0" max="10500" value="0" step="500" class="mul-range" id="profit-slider">
+                                <div class="single-range-slider">
+                                    <div class="s-track"></div>
+                                    <div id="profit-slider-range" class="s-range"></div>
+                                    <div id="profit-slider-thumb" class="s-thumb"></div>
+                                </div>
+                            </div>
+                            <div style="display: flex; margin-top: 8px;">
+                                <div class="remember-me-checkbox">
+                                    <img class="checkboximg" src="../assets/check.svg">
+                                </div>
+                                <div style="font-weight: normal; font-size: 12px;">
+                                    <label>Exclude Listings w/o Market Value</label>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- -------------filter-management-section ends---------- -->
+
+
+            <!-- -------------footer-section starts---------- -->
+
+            <section id="footer-section">
+                <button class="back-btn" onclick="changePage('#page1')"><img style="margin-right:7px ;" src="../assets/back-arrow.svg">BACK</button>
+                <button style="display: none;" class="next-page-btn backtoreview" onclick="reviewData(),changePage('#review-page')"><span>REVIEW</span></button>
+                <button class="next-page-btn next-btn" onclick="changePage('#page3')">NEXT (3/3)<img style="margin-left:7px;position: relative;
+                    top: 1px;" src="../assets/front-arrow.svg"></button>
+            </section>
+            <!-- -------------footer-section starts---------- -->
+        </div>
+        <div id="page3" style="display: none;" class="section-wrapper">
+            <!-- -------------heading-section starts---------- -->
+
+            <section id="heading-section">
+                <h1>New Filter</h1>
+                <h5>Page 3/3</h5>
+            </section>
+            <!-- -------------heading-section starts---------- -->
+
+            <!-- -------------filter-management-section starts---------- -->
+
+            <section id="filter-manager-section">
+                <h2>CONDITION <span style="font-size: 11px; color: #515050;"> (if N/A, leave blank)</span></h2>
+                <div id="filter-manager-div">
+                    <div id="left-div">
+                        <div style="margin-left: 15px; margin-bottom: 20px;" class="headerandbutton-container-header">
+                            <div style="margin-right: 6px; color: #0266ff;">EXCLUDE</div><img class="tooltipimg" src="../assets/knowmore.svg"><span class="tooltiptext" data-clicked="no">Filter out any listings with specific CR disclosures you want to EXCLUDE. If one selection
+                                        matches, that listing will be excluded from your results.</span>
+                        </div>
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">ACV Carfax Announcements</div>
+                            </div>
+                            <div id="acvCarfaxAnnouncements" class="headerandbutton-container-button-div">
+                                <div data-isclicked="no" class="btn-div announcement-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Sedan</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div announcement-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Hatchback</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div announcement-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>MUV/SUV</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div announcement-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Convertible</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div announcement-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Jeep</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div announcement-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Coupe</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div announcement-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Wagon</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div announcement-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Van</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Driveability Issues</div>
+                            </div>
+                            <div id="driveabilityIssues" class="headerandbutton-container-button-div">
+                                <div data-isclicked="no" class="btn-div driveability-issues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Sedan</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div driveability-issues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Hatchback</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div driveability-issues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>MUV/SUV</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div driveability-issues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Convertible</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div driveability-issues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Jeep</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div driveability-issues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Coupe</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div driveability-issues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Wagon</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div driveability-issues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Van</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Exterior Damages</div>
+                            </div>
+                            <div id="exteriorDamages" class="headerandbutton-container-button-div">
+                                <div data-isclicked="no" class="btn-div exdamage-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Sedan</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div exdamage-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Hatchback</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div exdamage-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>MUV/SUV</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div exdamage-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Convertible</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div exdamage-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Jeep</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div exdamage-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Coupe</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div exdamage-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Wagon</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div exdamage-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Van</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Interior Damages</div>
+                            </div>
+                            <div id="interiorDamages" class="headerandbutton-container-button-div">
+                                <div data-isclicked="no" class="btn-div indamage-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Sedan</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div indamage-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Hatchback</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div indamage-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>MUV/SUV</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div indamage-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Convertible</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div indamage-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Jeep</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div indamage-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Coupe</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div indamage-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Wagon</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div indamage-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Van</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Frame & Unibody Issues</div>
+                            </div>
+                            <div id="frameUnibodyIssues" class="headerandbutton-container-button-div">
+                                <div data-isclicked="no" class="btn-div framesandunibodyissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Sedan</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div framesandunibodyissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Hatchback</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div framesandunibodyissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>MUV/SUV</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div framesandunibodyissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Convertible</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div framesandunibodyissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Jeep</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div framesandunibodyissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Coupe</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div framesandunibodyissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Wagon</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div framesandunibodyissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Van</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Mechanical Issues</div>
+                            </div>
+                            <div id="mechanicalIssues" class="headerandbutton-container-button-div">
+                                <div data-isclicked="no" class="btn-div otherissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Sedan</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div mechissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Hatchback</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div mechissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>MUV/SUV</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div mechissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Convertible</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div mechissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Jeep</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div mechissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Coupe</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div mechissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Wagon</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div mechissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Van</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="page3-line" class="line"></div>
+                    <div style="margin-top:37px;" id="right-div">
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Warning Lights Issues</div>
+                            </div>
+                            <div id="warningLightsIssues" class="headerandbutton-container-button-div">
+                                <div data-isclicked="no" class="btn-div lightissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Sedan</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div lightissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Hatchback</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div lightissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>MUV/SUV</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div lightissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Convertible</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div lightissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Jeep</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div lightissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Coupe</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div lightissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Wagon</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div lightissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Van</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">OBDII Issues</div><img class="tooltipimg" src="../assets/knowmore.svg"><span class="tooltiptext" data-clicked="no">If there are specific OBDII codes that want to exclude, search and select them here. It is best to
+                                            search by specific OBDII codes, but you can also search for general descriptions.</span>
+                            </div>
+                            <div class="headerandbutton-container-searchbar">
+                                <input id="obdii-searchbar" onkeyup="dbQuery()" style="background-color:#f2f2f2;" type="text" placeholder="Search" autocomplete="off">
+
+                            </div>
+                            <div id="obdiiOptions" class="headerandbutton-container-button-div">
+                                <div data-isclicked="no" class="btn-div obdiiissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Most Common Codes</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div obdiiissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Common Powertrian Codes</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div obdiiissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Common Chassis Codes</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div obdiiissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Common Body Codes</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div obdiiissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Common Network / Computer Codes</div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Seller Notes</div>
+                            </div>
+                            <div id="sellerNotes" class="headerandbutton-container-button-div">
+                                <div data-isclicked="no" class="btn-div sellernotes-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Sedan</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div sellernotes-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Hatchback</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div sellernotes-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>MUV/SUV</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div sellernotes-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Convertible</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div sellernotes-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Jeep</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div sellernotes-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Coupe</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div sellernotes-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Wagon</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div sellernotes-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Van</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Title Issues</div>
+                            </div>
+                            <div id="titleIssues" class="headerandbutton-container-button-div">
+                                <div data-isclicked="no" class="btn-div tittleissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Sedan</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div tittleissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Hatchback</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div tittleissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>MUV/SUV</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div tittleissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Convertible</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div tittleissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Jeep</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div tittleissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Coupe</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div tittleissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Wagon</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div tittleissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Van</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="headerandbutton-container">
+                            <div class="headerandbutton-container-header">
+                                <div style="margin-right: 6px;">Wheels & Tires Issues</div>
+                            </div>
+                            <div id="wheelsAndTiresIssues" class="headerandbutton-container-button-div">
+                                <div data-isclicked="no" class="btn-div wheelandtiresissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Sedan</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div wheelandtiresissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Hatchback</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div wheelandtiresissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>MUV/SUV</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div wheelandtiresissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Convertible</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div wheelandtiresissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Jeep</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div wheelandtiresissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Coupe</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div wheelandtiresissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Wagon</div>
+                                </div>
+                                <div data-isclicked="no" class="btn-div wheelandtiresissues-type-btn">
+                                    <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+                                    <div>Van</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- -------------filter-management-section ends---------- -->
+
+
+            <!-- -------------include-section starts---------- -->
+
+
+            <section id="include-section">
+                <div class="headerandbutton-container">
+                    <div class="headerandbutton-container-header">
+                        <div style="margin-right: 6px; color: #0266ff;">INCLUDE</div><img class="tooltipimg" src="../assets/knowmore.svg"><span class="tooltiptext" data-clicked="no">If you like bad CarFax reports, transmission issues or frame damage, you can select specific
+                                    conditions to INCLUDE in your results.
+                                    NOTE 1: If there is the same filter set for EXCLUDE and INCLUDE, only the EXCLUDE will be
+                                    considered. The INCLUDE selection will be ignored.
+                                    NOTE 2: Only one INCLUDE selection is needed to match listing. If you have selected 3 INCLUDE
+                                    options, we’ll still show you listings with only 1/3 matches.</span>
+                    </div>
+                    <div class="headerandbutton-container-searchbar">
+                        <input style="background-color:#f2f2f2;" type="text" placeholder="Search" required autocomplete="off">
+
+                    </div>
+                    <div class="headerandbutton-container-button-div">
+                        <div data-isclicked="no" class="btn-div include-type-btn">
+                            <img style="padding-right:3px" src="../assets/plus.svg">
+                            <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                            <div>Audi</div>
+                        </div>
+                        <div data-isclicked="no" class="btn-div include-type-btn">
+                            <img style="padding-right:3px" src="../assets/plus.svg">
+                            <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                            <div>Alfa Romeo</div>
+                        </div>
+                        <div data-isclicked="no" class="btn-div include-type-btn">
+                            <img style="padding-right:3px" src="../assets/plus.svg">
+                            <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                            <div>BMW</div>
+                        </div>
+                        <div data-isclicked="no" class="btn-div include-type-btn">
+                            <img style="padding-right:3px" src="../assets/plus.svg">
+                            <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                            <div>Cadillac</div>
+                        </div>
+                        <div data-isclicked="no" class="btn-div include-type-btn">
+                            <img style="padding-right:3px" src="../assets/plus.svg">
+                            <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                            <div>Chevrolet</div>
+                        </div>
+                        <div data-isclicked="no" class="btn-div include-type-btn">
+                            <img style="padding-right:3px" src="../assets/plus.svg">
+                            <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                            <div>Fiat</div>
+                        </div>
+                        <div data-isclicked="no" class="btn-div include-type-btn">
+                            <img style="padding-right:3px" src="../assets/plus.svg">
+                            <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                            <div>Honda</div>
+                        </div>
+                        <div data-isclicked="no" class="btn-div include-type-btn">
+                            <img style="padding-right:3px" src="../assets/plus.svg">
+                            <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                            <div>Infiniti</div>
+                        </div>
+                        <div data-isclicked="no" class="btn-div include-type-btn">
+                            <img style="padding-right:3px" src="../assets/plus.svg">
+                            <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                            <div>Wagon</div>
+                        </div>
+                        <div data-isclicked="no" class="btn-div include-type-btn">
+                            <img style="padding-right:3px" src="../assets/plus.svg">
+                            <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                            <div>Jaguar</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- -------------include-section ends---------- -->
+
+            <!-- -------------notification-section starts---------- -->
+
+            <section class="notification-section">
+                <div class="notification-section-div">
+                    <div class="headerandbutton-container">
+                        <div class="headerandbutton-container-header">
+                            <div style="margin-right: 6px;">TEXT / SMS NOTIFICATION</div><img class="tooltipimg" src="../assets/knowmore.svg"><span class="tooltiptext" data-clicked="no">Using the number on your Account page, we will send you live text/SMS messages for the
+                                        listings that match your strict criteria. Therefore, time remaining, profit, max bid, miles, CR, etc.
+                                        are all important. We send you a message as soon as a listing matches your preferences.
+                                        We set a limit of 100 messages/day. You want to aim for 10-20/day for each filter.
+                                        Click “Yes” below to receive live text/SMS messages for this filter.</span>
+                        </div>
+                        <h6 style="padding-top: 15px; margin-left: 6px;">Recieve SMS Notification?</h6>
+                        <div class="headerandbutton-container-button-div">
+
+                            <div id="yes-notify" data-isclicked="no" onclick="popModalOnNoti()" data-other="1" disabled="false" class="btn-div notification-btn">
+                                <img style="padding-right:3px" src="../assets/plus.svg">
+                                <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                <div>Yes</div>
+                            </div>
+                            <div data-isclicked="no" data-other="0" disabled="false" class="btn-div notification-btn">
+                                <img style="padding-right:3px;" src="../assets/plus.svg">
+                                <img class="second-img-btn" style="padding-right:3px;" src="../assets/check.svg">
+                                <div id="no-notification">No</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="estimation-div">
+                    <div id="estimation-div-left">
+                        Estimated daily Texts/SMS:<br>
+                        <span style="color: #E73E3E;">TOO HIGH</span>
+                    </div>
+                    <div class="line">
+
+                    </div>
+                    <div id="estimation-div-right-page3" class="estimation-div-right">
+                        N/A
+                    </div>
+                </div> -->
+            </section>
+
+            <!-- -------------notification-section ends---------- -->
+            <!-- -------------footer-section starts---------- -->
+            <section id="footer-section">
+                <button class="back-btn" onclick="changePage('#page2')"><img style="margin-right:7px ;" src="../assets/back-arrow.svg">BACK</button>
+                <!-- <button style="display: none;  background-color: #0266ff;" class="next-page-btn backtoreview" onclick="reviewData(),changePage('#review-page')"><span>REVIEW</span></button> -->
+                <button class="next-page-btn" onclick="reviewData(),changePage('#review-page')">REVIEW</button>
+            </section>
+            <!-- -------------footer-section ends---------- -->
+        </div>
+        <div id="review-page" style="display: none;" class="section-wrapper">
+            <section id="heading-section">
+                <h1>Review Filter #1</h1>
+            </section>
+            <section id="data-display-section">
+                <!-- <div class="data-display-section-div">
+                                <div class="heading-blue">AUCTION</div>
+                                <div class="data-div">
+                                    <div class="data-div-left">
+                                        <div class="review-data">
+                                            <span class="caption">Name:</span>
+                                            <span class="data">Main filter</span>
+                                        </div>
+                                        <div class="review-data">
+                                            <span class="caption">Name:</span>
+                                            <span class="data">Main filter</span>
+                                        </div>
+                                        <div class="review-data">
+                                            <span class="caption">Name:</span>
+                                            <span class="data">Main filter</span>
+                                        </div>
+                                        <div class="review-data">
+                                            <span class="caption">Name:</span>
+                                            <span class="data">Main filter</span>
+                                        </div>
+                                        <div class="review-data">
+                                            <span class="caption">Name:</span>
+                                            <span class="data">Main filter</span>
+                                        </div>
+                                    </div>
+                                    <div class="data-div-right">
+                                        <div class="review-data">
+                                            <span class="caption">Name:</span>
+                                            <span class="data">Main filter</span>
+                                        </div>
+                                        <div class="review-data">
+                                            <span class="caption">Name:</span>
+                                            <span class="data">Main filter</span>
+                                        </div>
+                                        <div class="review-data">
+                                            <span class="caption">Name:</span>
+                                            <span class="data">Main filter</span>
+                                        </div>
+                                        <div class="review-data">
+                                            <span class="caption">Name:</span>
+                                            <span class="data">Main filter</span>
+                                        </div>
+                                        <div class="review-data">
+                                            <span class="caption">Name:</span>
+                                            <span class="data">Main filter</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="btn-container-div">
+                                    <button>EDIT/FIX</button>
+                                </div>
+                            </div> -->
+
+            </section>
+
+            <section id="final-notify" class="notification-section">
+                <!-- <div class="notification-section-div">
+                                <div class="headerandbutton-container">
+                                    <div class="headerandbutton-container-header">
+                                        <div>TEXT/SMS NOTIFICATION</div><img src="../assets/knowmore.svg">
+                                    </div>
+                                    <h10 style="padding-top: 15px; margin-left: 6px;">Recieve SMS Notification?</h10>
+                                    <div class="headerandbutton-container-button-div">
+
+                                        <div data-isclicked="no" data-isclicked="no" class="btn-div notification-btn">
+                                             <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                            <div>Yes</div>
+                                        </div>
+                                        <div data-isclicked="no" class="btn-div notification-btn">
+                                             <img style="padding-right:3px" src="../assets/plus.svg">
+                                    <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+                                            <div>No</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                <div class="estimation-div">
+                    <div id="estimation-div-left">
+                        Estimated daily Texts/SMS:<br>
+                        <span style="color: #E73E3E;">TOO HIGH</span>
+                    </div>
+                    <!-- <div class="line">
+
+                    </div> -->
+                    <div id="estimation-div-right-review" class="estimation-div-right">
+                        N/A
+                    </div>
+                </div>
+            </section>
+
+
+            <section id="footer-section" class="review-footer-section">
+                <button class="back-btn" onclick="changePage('#page3')"><img style="margin-right:7px ;" src="../assets/back-arrow.svg">BACK</button>
+                <button class="next-page-btn" onclick="confirm()">CONFIRM</button>
+            </section>
+
+        </div>
+    </div>
+    <!-- ----------------body-wrapper ends---------- -->
+    <!-- modal starts---------- -->
+    <div id="modal-container">
+        <div id="modal-popup" class="modal">
+            <div class="modal-content">
+                <div id="modal-data">
+                    <p id="head-modal-data"></p>
+                    <p id="foot-modal-data"></p>
+                </div>
+                <div class="modal-footer-btn">
+                    <button id="modal-btn-left"></button>
+                    <button id="modal-btn-right"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal ends........................... -->
+    <!-- ----------------templating divs begin (for dynamic rendering from server)---------- -->
+
+
+    <script id="caption-value-div" type="text/html">
+        <div class="review-data">
+            <span class="caption">{{caption}}</span>
+            <span class="data">{{value}}</span>
+        </div>
+    </script>
+
+    <script id="plus-check-type-btn" type="text/html">
+        <div data-isclicked="no" class="btn-div {{classType}}">
+            <img style="padding-right:3px" src="../assets/plus.svg">
+            <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+            <div>{{name}}</div>
+        </div>
+    </script>
+    <script id="plus-cross-type-btn" type="text/html">
+        <div data-isclicked="no" class="btn-div {{classType}}">
+            <img style="padding-right:3px" src="../assets/plus.svg">
+            <img class="second-img-btn" style="padding-right:3px" src="../assets/cross.svg">
+            <div>{{name}}</div>
+        </div>
+    </script>
+    <!-- ///////div-review -->
+
+    <script id="review-data-template" type="text/html">
+        <div class="data-display-section-div">
+            <div class="heading-blue">{{divheading}}</div>
+            <div style="display:{{divsubhead}}; font-weight:bold; margin-left:3px;">EXCLUDE</div>
+            <div class="data-div">
+                <div class="data-div-left">
+                    {{{leftdivdata}}}
+                </div>
+                <div id="review-line" class="{{pushLine}}"></div>
+                <div class="data-div-right">
+                    {{{rightdivdata}}}
+                </div>
+            </div>
+            <div class="btn-container-div">
+                <button onclick="changePage({{pagenum}}), showReviewBtn()">EDIT / FIX</button>
+            </div>
+        </div>
+    </script>
+    <script id="modal-template" type="text/html">
+        <div id="modal-popup" class="modal">
+            <div class="modal-content">
+                <div id="modal-data">
+                    <p id="head-modal-data">{{{headdata}}}</p>
+                    <p id="foot-modal-data">{{{footdata}}}</p>
+                </div>
+                <div class="modal-footer-btn">
+                    <button class='{{classleftbtn}}' style="display:{{oneBtn}}" id="modal-btn-left" onclick='{{leftbtn}}'>{{{btnleftdata}}}</button>
+                    <button class='{{classrightbtn}}' id="modal-btn-right" onclick='{{rightbtn}}'>{{{btnrightdata}}}</button>
+                </div>
+            </div>
+        </div>
+    </script>
+    <div style="display: none;" data-isclicked="no" class="btn-div auc-type-btn">
+        <img style="padding-right:3px" src="../assets/check.svg">
+        <img class="second-img-btn" style="padding-right:3px" src="../assets/check.svg">
+        <div>dummy</div>
+    </div>
+    <div class="cache" style="display: none;">
+        <img src="../assets/logout-white.svg">
+        <img src="../assets/back-arrow-red.svg">
+        <img src="../assets/red-cross.svg">
+
+    </div>
+    <!-- -----------scripts for cdn------- -->
+    <script src="../cdnjs/mustache.min.js"></script>
+    <script src="../effects/filterJs.js"></script>
+    <script src="../auth-handler/logout-handler.js"></script>
+    <script src="../auth-handler/filterManagement-handler.js"></script>
+    <script src="../auth-handler/de-bouncing.js"></script>
+</body>
+
+</html>

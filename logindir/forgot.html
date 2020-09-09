@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
+    <script src="https://kit.fontawesome.com/ffda2c1e75.js" crossorigin="anonymous"></script>
+    <title>Auto Hound</title>
+    <script src="../effects/global-routing-handler-login.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+    <link rel="icon" href="../assets/favicon.svg" sizes="100x100">
+    <link rel="stylesheet" href="../css/loader.css">
+    <link rel="stylesheet" href="../css/login-page.css">
+</head>
+
+<body>
+    <ul class="header">
+        <li id="logo">
+            <a href="../index.html"><img src="../assets/logo.svg"></a>
+        </li>
+
+    </ul>
+    <div class="sidebar-image-div" id="side-div">
+        <img src="../assets/login-side.svg ">
+    </div>
+    <div class="body-wrapper">
+        <!-- <div class="loader" id="spin-loader">
+            <div class="lds-roller">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div> -->
+        <div id="forgot-login-div" class="login-form-div">
+
+            <!-- header ends---------- -->
+            <div class="form-container">
+                <h1><span id="mssg-span" style="color: #0F6EFF;">Forgot Your Password?</span></h1>
+                <div id="mssg-div" class="message-div">No worries! Enter your email and we'll<br> send you a link to reset it.</div>
+                <form id="forgot-form">
+                    <div class="form-ele">
+                        <input type="email" id="email" placeholder="Email" required autocomplete="off">
+                    </div>
+                    <div class="form-ele ">
+                        <button><i id="l-loader"  style="position: relative;left: -12px;animation: spinloader 2s linear infinite;" class="fas fa-spinner"></i>SUBMIT</button>
+                    </div>
+                </form>
+
+            </div>
+            <section class="footer" id="footer-forgot">
+                Don't have an account yet? <span style="color: #0F6EFF;"><a href="./register.html"><u>Register Now</u></a></span>
+            </section>
+        </div>
+
+    </div>
+
+
+    <script>
+        const forgotForm = document.querySelector('#forgot-form')
+        forgotForm.addEventListener('submit', (e) => {
+            e.preventDefault()
+            const email = e.target.elements.email.value
+                ///// sending email to server then-------
+            console.log(email);
+            forgotForm.style.display = "none"
+            document.querySelector('#mssg-div').style.display = "none"
+            document.querySelector('#mssg-span').innerHTML = "Perfect, check your email to<br>reset your password!"
+
+        })
+    </script>
+    <div style="visibility: hidden;">
+        <i class="fas fa-spinner"></i>
+    </div>
+
+</body>
+
+</html>
